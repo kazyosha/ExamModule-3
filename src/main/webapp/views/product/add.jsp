@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <h2>Thêm sản phẩm mới</h2>
-    <form action="${pageContext.request.contextPath}/product/add" method="post">
+    <form action="${pageContext.request.contextPath}/product/add" method="post" onsubmit="return validateForm()">
         <div class="mb-3">
             <label for="name" class="form-label">Tên sản phẩm</label>
             <input type="text" name="name" id="name" class="form-control" required>
@@ -23,7 +23,12 @@
         </div>
         <div class="mb-3">
             <label for="color" class="form-label">Màu sắc</label>
-            <input type="text" name="color" id="color" class="form-control">
+            <select name="color" id="color" class="form-select" required>
+                <option value="">-- Chọn màu --</option>
+                <c:forEach var="col" items="${listColor}">
+                    <option value="${col}">${col}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Mô tả</label>
@@ -42,23 +47,52 @@
         <a href="${pageContext.request.contextPath}/product/list" class="btn btn-secondary">Quay lại</a>
     </form>
 </div>
+
 <c:if test="${not empty message}">
-    <div id="notification" style="display:none; padding:10px; margin-bottom:10px; border: 1px solid green; color: green;">
-            ${message}
-    </div>
     <script>
-        document.getElementById("notification").style.display = "block";
-        setTimeout(() => {
-            document.getElementById("notification").style.display = "none";
-        }, 3000);
-    </script>
-</c:if>
-<c:if test="${param.message == 'success'}">
-    <script>
-        alert("Thêm mới sản phẩm thành công!");
+        if ("${message}" === "add_success") {
+            alert("Thêm sản phẩm thành công!");
+        }
+        if ("${message}" === "welcome_add_page") {
+            alert("Bạn đang ở trang thêm sản phẩm.");
+        }
     </script>
 </c:if>
 
+<script>
+    function validateForm() {
+        const name = document.getElementById("name").value.trim();
+        const priceStr = document.getElementById("price").value.trim();
+        const quantityStr = document.getElementById("quantity").value.trim();
+
+        if (name === "") {
+            alert("Tên sản phẩm không được để trống.");
+            return false;
+        }
+
+        if (priceStr === "") {
+            alert("Giá sản phẩm không được để trống.");
+            return false;
+        }
+        const price = parseFloat(priceStr);
+        if (isNaN(price) || price <= 10000000) {
+            alert("Giá sản phẩm phải lớn hơn 10.000.000 VND.");
+            return false;
+        }
+
+        if (quantityStr === "") {
+            alert("Số lượng không được để trống.");
+            return false;
+        }
+        const quantity = parseInt(quantityStr);
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("Số lượng phải là số nguyên dương.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

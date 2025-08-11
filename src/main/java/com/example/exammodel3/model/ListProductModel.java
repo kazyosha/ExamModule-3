@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListProductModel extends BaseModel{
+public class ListProductModel extends BaseModel {
     public List<Product> ListProductModel() throws SQLException {
-    String sql = "SELECT p.id, p.name, p.price, p.quantity,p.color, p.description, c.name AS category_name\n" +
-            "        FROM product p\n" +
-            "        JOIN categories c ON p.category_id = c.id";
+        String sql = "SELECT p.id, p.name, p.price, p.quantity,p.color, p.description, c.name AS category_name\n" +
+                "        FROM product p\n" +
+                "        JOIN categories c ON p.category_id = c.id";
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<Product> listProduct = new ArrayList<>();
@@ -33,6 +33,7 @@ public class ListProductModel extends BaseModel{
         }
         return listProduct;
     }
+
     public List<Product> searchProducts(String name, Double price, Integer categoryId, String color) throws SQLException {
         String sql = "SELECT p.*, c.name AS category_name " +
                 "FROM product p " +
@@ -87,12 +88,14 @@ public class ListProductModel extends BaseModel{
         }
         return list;
     }
+
     public void deleteProductById(int id) throws SQLException {
         String sql = "DELETE FROM product WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setInt(1, id);
         ps.executeUpdate();
     }
+
     public void addProduct(Product product) throws SQLException {
         String sql = "INSERT INTO product (name, price, quantity, color, description, category_id) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -104,6 +107,7 @@ public class ListProductModel extends BaseModel{
         ps.setInt(6, product.getCategory().getId());
         ps.executeUpdate();
     }
+
     public Product findById(int id) throws SQLException {
         String sql = "SELECT p.*, c.name AS category_name FROM product p JOIN categories c ON p.category_id = c.id WHERE p.id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -127,6 +131,7 @@ public class ListProductModel extends BaseModel{
         }
         return null;
     }
+
     public void updateProduct(Product product) throws SQLException {
         String sql = "UPDATE product SET name = ?, price = ?, quantity = ?, color = ?, description = ?, category_id = ? WHERE id = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -139,4 +144,15 @@ public class ListProductModel extends BaseModel{
         ps.setInt(7, product.getId());
         ps.executeUpdate();
     }
+    public List<String> getAllColors() throws SQLException {
+        String sql = "SELECT DISTINCT color FROM product WHERE color IS NOT NULL AND color <> ''";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        List<String> colors = new ArrayList<>();
+        while (rs.next()) {
+            colors.add(rs.getString("color"));
+        }
+        return colors;
+    }
+
 }

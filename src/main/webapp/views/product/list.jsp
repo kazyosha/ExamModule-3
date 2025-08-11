@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Danh sách sản phẩm</title>
@@ -8,10 +9,12 @@
         body {
             padding: 20px;
         }
+
         .table thead {
             background-color: #343a40;
             color: white;
         }
+
         .action-btn {
             display: flex;
             gap: 5px;
@@ -21,7 +24,8 @@
 <body>
 <div class="container">
     <h2 class="mb-4">Danh sách sản phẩm</h2>
-    <form class="row g-3 mb-4 align-items-center" method="get" action="${pageContext.request.contextPath}/product/search">
+    <form class="row g-3 mb-4 align-items-center" method="get"
+          action="${pageContext.request.contextPath}/product/search">
         <div class="col-md-3">
             <input type="text" name="name" class="form-control" placeholder="Tên sản phẩm" value="${param.name}">
         </div>
@@ -32,7 +36,8 @@
             <select name="category" class="form-select">
                 <option value="">-- Chọn danh mục --</option>
                 <c:forEach var="cat" items="${listCategory}">
-                    <option value="${cat.id}" <c:if test="${param.category == cat.id}">selected</c:if>>${cat.name}</option>
+                    <option value="${cat.id}"
+                            <c:if test="${param.category == cat.id}">selected</c:if>>${cat.name}</option>
                 </c:forEach>
             </select>
         </div>
@@ -68,14 +73,17 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>${product.name}</td>
-                <td>${product.price}</td>
+                <td>
+                    <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="₫" maxFractionDigits="0" />
+                </td>
                 <td>${product.color}</td>
                 <td>${product.quantity}</td>
                 <td>${product.description}</td>
                 <td>${product.getCategory().getName()}</td>
                 <td>
                     <div class="action-btn">
-                        <a href="${pageContext.request.contextPath}/product/edit?id=${product.id}" class="btn btn-warning btn-sm">Sửa</a>
+                        <a href="${pageContext.request.contextPath}/product/edit?id=${product.id}"
+                           class="btn btn-warning btn-sm">Sửa</a>
                         <a href="${pageContext.request.contextPath}/product/delete?id=${product.id}"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">Xóa</a>

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryModel extends BaseModel{
+public class CategoryModel extends BaseModel {
     public List<Category> getAllCategories() throws SQLException {
         String sql = "SELECT * FROM categories";
         PreparedStatement ps = conn.prepareStatement(sql);

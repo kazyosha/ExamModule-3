@@ -19,11 +19,13 @@
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Giá</label>
-            <input type="number" step="0.01" name="price" id="price" value="${product.price}" class="form-control" required>
+            <input type="number" step="0.01" name="price" id="price" value="${product.price}" class="form-control"
+                   required>
         </div>
         <div class="mb-3">
             <label for="quantity" class="form-label">Số lượng</label>
-            <input type="number" name="quantity" id="quantity" value="${product.quantity}" class="form-control" required>
+            <input type="number" name="quantity" id="quantity" value="${product.quantity}" class="form-control"
+                   required>
         </div>
         <div class="mb-3">
             <label for="color" class="form-label">Màu sắc</label>
@@ -38,7 +40,8 @@
             <select name="category" id="category" class="form-select" required>
                 <option value="">-- Chọn danh mục --</option>
                 <c:forEach var="cat" items="${listCategory}">
-                    <option value="${cat.id}" <c:if test="${cat.id == product.category.id}">selected</c:if>>${cat.name}</option>
+                    <option value="${cat.id}"
+                            <c:if test="${cat.id == product.category.id}">selected</c:if>>${cat.name}</option>
                 </c:forEach>
             </select>
         </div>

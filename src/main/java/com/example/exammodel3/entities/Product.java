@@ -9,7 +9,9 @@ public class Product {
     private String description;
     private Category category;
 
-    public Product() {}
+    public Product() {
+    }
+
     public Product(int id, String name, double price, String color, String description, Category category) {
         this.id = id;
         this.name = name;

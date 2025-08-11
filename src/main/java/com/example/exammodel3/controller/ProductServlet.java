@@ -139,6 +139,12 @@ public class ProductServlet extends HttpServlet {
     private void showAddForm(HttpServletRequest req, HttpServletResponse resp) {
         try {
             List<Category> categories = categoryModel.getAllCategories();
+            List<String> colors = listProductModel.getAllColors();
+            String message = req.getParameter("message");
+            if (message != null && !message.trim().isEmpty()) {
+                req.setAttribute("message", message);
+            }
+            req.setAttribute("listColor", colors);
             req.setAttribute("listCategory", categories);
             req.getRequestDispatcher("/views/Product/add.jsp").forward(req, resp);
         } catch (ServletException | SQLException | IOException e) {
@@ -184,9 +190,10 @@ public class ProductServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        resp.sendRedirect(req.getContextPath() + "/product/list");
+        resp.sendRedirect(req.getContextPath() + "/product/add?message=add_success");
     }
-    private void showEditForm(HttpServletRequest req, HttpServletResponse resp){
+
+    private void showEditForm(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String idStr = req.getParameter("id");
             if (idStr == null || idStr.trim().isEmpty()) {
@@ -208,7 +215,8 @@ public class ProductServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-    private void updateProduct(HttpServletRequest req, HttpServletResponse resp){
+
+    private void updateProduct(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String idStr = req.getParameter("id");
             String name = req.getParameter("name");
